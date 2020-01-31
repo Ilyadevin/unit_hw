@@ -62,7 +62,7 @@ class TestSecretaryProgram(unittest.TestCase):
     # Тест добавления полки
 
     def test_add_new_shelf(self):
-        with patch('app.input', return_value=self.example_set['shelf']) as _:
+        with patch('app_secretary.input', return_value=self.example_set['shelf']) as _:
             self.assertTrue(app_secretary.add_new_shelf(self.example_set['shelf']))
 
     # Тест добавление нового документа
