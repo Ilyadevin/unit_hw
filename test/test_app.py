@@ -26,6 +26,7 @@ class TestSecretaryProgram(unittest.TestCase):
         }
         self.example_document = {"type": "passport", "number": "2207 87574", "name": "Дмитрий Иванов"}
         self.shelf_example = {'doc number': "11-2", 'new_doc_shelf': '2'}
+        self.document_for_show = {"type": "invoice", "number": "11-2", "name": "Геннадий Покемонов"}
         self.directories = deepcopy(directories)
         self.documents = deepcopy(documents)
 
@@ -72,9 +73,7 @@ class TestSecretaryProgram(unittest.TestCase):
 
         with patch('app_secretary.documents', self.documents), \
              patch('app_secretary.directories', self.directories), \
-             patch.dict('app_secretary.input', return_value={"type": "passport", "number": "2207 87574",
-                                                             "name": "Дмитрий Иванов"}),\
-             patch('app_secretary.input', return_value='3')as _:
+             patch('app_secretary.input', side_effect=["passport", "2207 87574", "Дмитрий Иванов", '3'])as _:
             app_secretary.add_new_doc()
             self.assertFalse(app_secretary.check_document_existance(self.example_document["number"]))
 
@@ -114,14 +113,16 @@ class TestSecretaryProgram(unittest.TestCase):
 
     def test_move_doc_to_shelf(self):
         self.assertTrue(app_secretary.check_document_existance('11-2'))
-        with patch('app_secretary.input', return_value='11-2' and '3') as _:
+        with patch('app_secretary.input', side_effect=['11-2', '3']) as _:
             app_secretary.move_doc_to_shelf()
-            self.assertEqual(app_secretary.move_doc_to_shelf(), None)
+            self.assertEqual(app_secretary.check_document_existance("11-2"), True)
 
     # Информация о документе
 
     def test_show_document_info(self):
-        self.assertTrue(app_secretary.show_document_info('11-2'))
+        self.assertTrue(app_secretary.check_document_existance('11-2'))
+        app_secretary.show_document_info(self.document_for_show)
+        self.assertEqual(app_secretary.show_document_info(self.document_for_show), None)
 
 
 if __name__ == '__main__':
