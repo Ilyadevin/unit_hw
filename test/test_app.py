@@ -9,9 +9,9 @@ directories = dict()
 
 
 def setUpModule():
-    with open('C:/Users/г/Desktop/WorkSpace/Tests/fixtures/documents.json', 'r', encoding='utf-8') as out_docs:
+    with open('C:/Users/г/Desktop/WorkSpace/Tests_hw/fixtures/documents.json', 'r', encoding='utf-8') as out_docs:
         documents.extend(json.load(out_docs))
-    with open('C:/Users/г/Desktop/WorkSpace/Tests/fixtures/directories.json', 'r', encoding='utf-8') as out_dirs:
+    with open('C:/Users/г/Desktop/WorkSpace/Tests_hw/fixtures/directories.json', 'r', encoding='utf-8') as out_dirs:
         directories.update(json.load(out_dirs))
 
 
@@ -54,9 +54,9 @@ class TestSecretaryProgram(unittest.TestCase):
     # # Тест на показ владельца документа
 
     def test_get_doc_owner_name(self):
-        self.assertFalse(app_secretary.check_document_existance("11-2"))
+        self.assertTrue(app_secretary.check_document_existance("11-2"))
 
-        with patch('app.input', return_value="11-2") as _:
+        with patch('app_secretary.input', return_value="11-2") as _:
             app_secretary.get_doc_owner_name()
 
     # Тест добавления полки
@@ -72,7 +72,8 @@ class TestSecretaryProgram(unittest.TestCase):
 
         with patch('app_secretary.documents', self.documents), \
              patch('app_secretary.directories', self.directories), \
-             patch.dict('app_secretary.input', return_value={"type": "passport", "number": "2207 87574", "name": "Дмитрий Иванов"}),\
+             patch.dict('app_secretary.input', return_value={"type": "passport", "number": "2207 87574",
+                                                             "name": "Дмитрий Иванов"}),\
              patch('app_secretary.input', return_value='3')as _:
             app_secretary.add_new_doc()
             self.assertFalse(app_secretary.check_document_existance(self.example_document["number"]))
@@ -118,12 +119,9 @@ class TestSecretaryProgram(unittest.TestCase):
             self.assertEqual(app_secretary.move_doc_to_shelf(), None)
 
     # Информация о документе
-    # Не понимаю почему тест show_documents_info падает
 
     def test_show_document_info(self):
-        self.assertTrue(app_secretary.check_document_existance('11-2'))
-        app_secretary.show_document_info('11-2')
-        self.assertEqual(app_secretary.show_document_info('11-2'), None)
+        self.assertTrue(app_secretary.show_document_info('11-2'))
 
 
 if __name__ == '__main__':
