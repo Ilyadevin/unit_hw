@@ -80,10 +80,6 @@ class TestSecretaryProgram(unittest.TestCase):
     # Тест на показ всех документов
 
     def test_show_all_docs(self):
-        self.assertTrue(app_secretary.check_document_existance('11-2'))
-        self.assertTrue(app_secretary.check_document_existance("2207 876234"))
-        self.assertTrue(app_secretary.check_document_existance("10006"))
-        app_secretary.show_all_docs_info()
         self.assertEqual(app_secretary.show_all_docs_info(), None)
 
     # Проверка существования документа
