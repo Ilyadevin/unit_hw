@@ -39,5 +39,4 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(result['code'], 422)
 
 
-
-unit = MyTestCase
+unittest.main()

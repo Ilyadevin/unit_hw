@@ -45,7 +45,6 @@ class TestSecretaryProgram(unittest.TestCase):
 
     def test_delete_document(self):
         self.assertTrue(app_secretary.check_document_existance("10006"))
-        len_doc = len(self.directories['2'])
         with patch('app_secretary.documents', self.documents), \
              patch('app_secretary.directories', self.directories), \
              patch('app_secretary.input', return_value="10006") as _:
